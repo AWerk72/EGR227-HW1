@@ -3,12 +3,16 @@ import java.util.Queue;
 import java.util.*;
 
 /**
- * Add your own comments
+ * Austin Werk
+ *
+ * EGR227- Hw1
  */
 public class HtmlValidator {
 
+    //created a global public queue variable
     public Queue<HtmlTag> hTag;
 
+    //constructors
     public HtmlValidator(){
         hTag = new LinkedList<>();
     }
@@ -20,6 +24,7 @@ public class HtmlValidator {
         this.hTag = new LinkedList<>(hTag);
     }
 
+    //addTag method for the global queue
     public void addTag(HtmlTag tag) throws IllegalArgumentException{
         if(tag == null){
             throw new IllegalArgumentException("tag can't be null");
@@ -27,10 +32,7 @@ public class HtmlValidator {
         hTag.add(tag);
     }
 
-    public Queue<HtmlTag> getTags(){
-        return new LinkedList<>(hTag);
-    }
-
+    // method to remove elements from the global queue
     public void removeAll(String element) throws IllegalArgumentException{
         if(element == null){
             throw new IllegalArgumentException();
@@ -44,6 +46,7 @@ public class HtmlValidator {
         hTag = fTag;
     }
 
+    //validator method to analyze whether or not tags have matching pairs
     public void validate(){
         Stack<HtmlTag> cTag = new Stack<>();
         for(int i=0; i<hTag.size(); i++){
@@ -69,16 +72,16 @@ public class HtmlValidator {
         }
     }
 
+    // Method to produce indent found between tags
+    private static void indent(HtmlTag tag, int space) {
+        StringBuilder sB = new StringBuilder();
+        String emptySpace = "    ";
+        for (int i = 0; i < space; i++) {
+            sB.append(emptySpace);
+        }
+        sB.append(tag.toString());
 
-private static void indent(HtmlTag tag, int space) {
-    StringBuilder sB = new StringBuilder();
-    String emptySpace = "    ";
-    for (int i = 0; i < space; i++) {
-        sB.append(emptySpace);
+        System.out.println(sB);
     }
-    sB.append(tag.toString());
-
-    System.out.println(sB);
-}
 
 }
