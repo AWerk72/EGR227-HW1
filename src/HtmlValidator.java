@@ -52,7 +52,7 @@ public class HtmlValidator {
 
             if(fTag.isSelfClosing()){
                 indent((HtmlTag) hTag, cTag.size());
-            } else if(hTag.isEmpty()){ // check method
+            } else if(((HtmlTag) hTag).isOpenTag()){
                 indent((HtmlTag) hTag, cTag.size());
                 cTag.push((HtmlTag) hTag);
             } else if(!cTag.isEmpty() && ((HtmlTag) hTag).matches(cTag.peek())){

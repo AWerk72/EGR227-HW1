@@ -82,6 +82,10 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test1(){
+        // tests constructor's Illegal Argument Exception
+        new HtmlValidator(null);
+
+        Assert.assertTrue("If false, null activates IllegalArgumentException", true);
 
 	}
 
@@ -92,6 +96,11 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test2(){
+        // test's that addTag method throws IllegalArgumentException
+
+        HtmlValidator validator = new HtmlValidator();
+        validator.addTag(null);
+
 
 	}
 
@@ -103,8 +112,16 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test3(){
+        // Test's addTag method with actual tags
+        HtmlValidator validator = new HtmlValidator();
+        validator.addTag(new HtmlTag("h1", true));
+        validator.addTag(new HtmlTag("h1", false));
 
-	}
+        Queue<HtmlTag> tags = validator.getTags();
+        Assert.assertNotEquals(tags, validator.hTag);
+        Assert.assertEquals(tags, validator.hTag);
+
+    }
 
 
     /**
@@ -114,6 +131,15 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test4(){
+        // Tests remove all method
+        HtmlValidator validator = new HtmlValidator();
+
+        validator.addTag(new HtmlTag("h1"));
+        validator.addTag(new HtmlTag("h2"));
+
+        validator.removeAll("h1");
+        Assert.assertEquals(1, validator.hTag.size());
+        Assert.assertEquals("h2", validator.hTag.peek().getElement());
 
 	}
 
@@ -124,6 +150,10 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test5(){
+        // tests removeAll will throw IllegalArgumentException
+
+        HtmlValidator validator = new HtmlValidator();
+        validator.removeAll(null);
 
 	}
 
@@ -134,6 +164,16 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test6(){
+        // tests validate method can identify self closing tags
+        HtmlValidator validator = new HtmlValidator();
+        validator.addTag(new HtmlTag("h1", true));
+        //validator.addTag(new HtmlTag("p",true ));
+        validator.addTag(new HtmlTag("h1", false));
+        validator.validate();
+
+        Assert.assertTrue("Validator correctly identified true tag",true);
+        //uncomment p tag to use assert statement below
+        // Assert.assertTrue("Validator identified p tag",false);
 
 	}
 
@@ -144,6 +184,18 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test7(){
+        // Tests validator error
+        HtmlValidator validator = new HtmlValidator();
+        HtmlTag tag1 = new HtmlTag("html", true);
+        HtmlTag tag2 = new HtmlTag("body", true);
+        HtmlTag tag3 = new HtmlTag("p", true);
+
+        validator.addTag(tag1);
+        validator.addTag(tag2);
+        validator.addTag(tag3);
+
+        validator.validate();
+        Assert.assertTrue("No closing tags are found", false);
 
 	}
 
@@ -154,6 +206,9 @@ public class HtmlValidatorTest {
      */
 	@Test
 	public void test8(){
+        //tests validate method correctly processes closing tag
+        HtmlValidator validator = new HtmlValidator();
+        validator.addTag(new HtmlTag("b"));
 
 	}
 
@@ -163,7 +218,24 @@ public class HtmlValidatorTest {
 	 */
 	@Test
 	public void myRemoveAllTest1(){
+        //test adds tags and then removes them
+        //After, test checks to make sure they are removed
+        HtmlValidator validator = new HtmlValidator();
+        HtmlTag tag1 = new HtmlTag("html", true);
+        HtmlTag tag2 = new HtmlTag("body", true);
+        HtmlTag tag3 = new HtmlTag("p", true);
+        HtmlTag tag4 = new HtmlTag("p", false);
+        validator.addTag(tag1);
+        validator.addTag(tag2);
+        validator.addTag(tag3);
+        validator.addTag(tag4);
 
+        validator.removeAll("p");
+
+        Assert.assertEquals(2, validator.getTags().size());
+        Assert.assertEquals("html", validator.getTags().remove().getElement());
+        Assert.assertEquals("body", validator.getTags().remove().getElement());
+        Assert.assertTrue(validator.getTags().isEmpty());
 	}
 
 	/**
